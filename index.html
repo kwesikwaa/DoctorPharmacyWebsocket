@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input onkeyup="" type="text" name="" id="txt">
+    <input onclick="send()" type="button" value="SEND">
+    <br>
+    <ul id="textlist"></ul>
+
+    <script>
+        var ws = new WebSocket("ws://127.0.0.1:8000/hospital");
+        
+        //OPTIONAL FOR keyboard enter key
+        var nter = document.getElementById('txt')
+        nter.addEventListener('keyup',(event)=>{
+            if(event.keyCode==13){send()}})
+            
+        ws.onmessage = (event)=>{
+            var messages = document.getElementById('textlist');
+            var message = document.createElement('li');
+            var content = document.createTextNode(event.data);
+            message.appendChild(content)
+            messages.appendChild(message)
+        }
+
+        const send = ()=>{
+            var input = document.getElementById('txt');
+            if(input.value.length>0){
+                console.log('inside send');
+                ws.send(input.value);
+                input.value = '';
+                event.preventDefault();
+            }
+            
+        }
+        
+    </script>
+</body>
+</html>

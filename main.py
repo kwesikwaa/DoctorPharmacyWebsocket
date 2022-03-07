@@ -12,6 +12,6 @@ async def connectsocket(skt: WebSocket):
     while True:
         try:
             text = await skt.receive_text()
-            await skt.send_text(text)
+            await skt.send_text(f'from server: {text}')
         except:
             break
